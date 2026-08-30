@@ -1,0 +1,45 @@
+name: Market Sentiment Data Pipeline
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'
+    - cron: '30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+        
+    - name: Cache HuggingFace Models
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/huggingface
+        key: ${{ runner.os }}-huggingface-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-huggingface-
+          
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+      
+    - name: Run Data Fetcher (News & Sentiment)
+      if: github.event.schedule == '0 */2 * * *' || github.event_name == 'workflow_dispatch'
+      env:
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        IS_LIVE_DEMO: "true"
+      run: python data_fetcher.py
+      
+    - name: Run Price Updater (Time Machine)
+      if: github.event.schedule == '30 * * * *' || github.event_name == 'workflow_dispatch'
+      env:
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+      run: python price_updater.py
