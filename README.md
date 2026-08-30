@@ -37,4 +37,4 @@ This repository includes a fully automated CI/CD pipeline (`.github/workflows/pi
 - Run `data_fetcher.py` every 2 hours to collect new articles.
 - Run `price_updater.py` at the 30th minute of every hour to lock in retroactive prices.
 
-**Live Demo Limit:** To prevent API limits and database bloat for portfolio demonstrations, the `data_fetcher.py` script is hardcoded with a `2000` record limit when running on GitHub Actions (`IS_LIVE_DEMO="true"`). Once the MongoDB cluster hits 2000 documents, the fetcher will gracefully stop collecting new data. If you wish to use this system for continuous live trading, simply remove the `IS_LIVE_DEMO` variable from `pipeline.yml` or your Streamlit secrets.
+**Live Demo Limit:** To prevent API limits and database bloat for portfolio demonstrations, you can optionally set the `IS_LIVE_DEMO="true"` environment variable. When enabled, the fetcher will gracefully stop collecting new data once the MongoDB cluster hits 2000 documents. If you wish to use this system for continuous live trading, simply do not set this variable.
