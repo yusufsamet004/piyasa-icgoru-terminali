@@ -1,4 +1,6 @@
-# Market Sentiment Pipeline
+# Market Sentiment Pipeline (Piyasa İçgörü Terminali)
+
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Click_Here-red?style=for-the-badge&logo=streamlit)](https://piyasa-icgoru-terminali-ly4ecrgfetxghore6l9ebw.streamlit.app)
 
 This is a personal project I built to see how financial news *actually* affects stock prices. There's a common saying in the market to "buy the rumor, sell the news", and I wanted to build a data pipeline to test if that's true.
 
