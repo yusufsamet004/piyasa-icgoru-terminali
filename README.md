@@ -19,7 +19,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-2. Create a `.env` file in the root folder and add your MongoDB connection string:
+2. Set up a free MongoDB Atlas cluster (or local MongoDB) and get your connection string. Create a `.env` file in the root folder and add it:
 ```
 MONGO_URI=mongodb+srv://<username>:<password>@cluster...
 ```
