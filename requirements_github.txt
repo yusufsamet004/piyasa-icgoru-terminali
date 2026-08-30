@@ -1,5 +1,6 @@
-streamlit==1.62.0
 pandas==3.0.5
-altair==6.2.2
 pymongo==4.17.0
 python-dotenv==1.2.3
+yfinance==1.7.0
+transformers==4.38.2
+torch==2.2.2
