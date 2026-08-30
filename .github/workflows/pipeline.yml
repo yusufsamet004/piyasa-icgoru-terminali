@@ -24,18 +24,18 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.cache/huggingface
-        key: ${{ runner.os }}-huggingface-${{ hashFiles('requirements_github.txt') }}
+        key: ${{ runner.os }}-huggingface-${{ hashFiles('requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-huggingface-
           
     - name: Install dependencies
-      run: pip install -r requirements_github.txt
+      run: pip install -r requirements.txt
       
     - name: Run Data Fetcher (News & Sentiment)
       if: github.event.schedule == '0 */2 * * *' || github.event_name == 'workflow_dispatch'
       env:
         MONGO_URI: ${{ secrets.MONGO_URI }}
-        IS_LIVE_DEMO: "true"
+        IS_LIVE_DEMO: ${{ secrets.IS_LIVE_DEMO }}
       run: python data_fetcher.py
       
     - name: Run Price Updater (Time Machine)
