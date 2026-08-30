@@ -4,6 +4,7 @@ import pandas as pd
 import streamlit as st
 import altair as alt
 from pymongo.mongo_client import MongoClient
+import certifi
 from dotenv import load_dotenv
 
 try:
@@ -22,7 +23,7 @@ MONGO_URI = os.getenv("MONGO_URI")
 def get_data():
     if not MONGO_URI: return pd.DataFrame()
     try:
-        client = MongoClient(MONGO_URI, tlsAllowInvalidCertificates=True)
+        client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
         collection = client.MarketDataDB.SentimentLogs
         cursor = collection.find({
             "$or": [{"price_15m": {"$ne": None}}, {"price_30m": {"$ne": None}}, {"price_60m": {"$ne": None}}]
