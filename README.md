@@ -30,3 +30,11 @@ streamlit run app.py
 ```
 
 Note: To keep the database updated automatically, you can set up a simple cron job to run `data_fetcher.py` and `price_updater.py` every few minutes.
+
+## Cloud Automation (GitHub Actions)
+
+This repository includes a fully automated CI/CD pipeline (`.github/workflows/pipeline.yml`) that runs on GitHub's servers for free. It is scheduled to:
+- Run `data_fetcher.py` every 2 hours to collect new articles.
+- Run `price_updater.py` at the 30th minute of every hour to lock in retroactive prices.
+
+**Live Demo Limit:** To prevent API limits and database bloat for portfolio demonstrations, the `data_fetcher.py` script is hardcoded with a `2000` record limit when running on GitHub Actions (`IS_LIVE_DEMO="true"`). Once the MongoDB cluster hits 2000 documents, the fetcher will gracefully stop collecting new data. If you wish to use this system for continuous live trading, simply remove the `IS_LIVE_DEMO` variable from `pipeline.yml` or your Streamlit secrets.
