@@ -294,13 +294,13 @@ else:
 
         st.subheader("Finansal Analiz Tablosu")
         st.markdown("""
-        **Tablo Terimleri:**
-        - **(Başlık Yok):** İçerik üzerinden analiz yapıldığını gösterir.
-        - **Karar:** Temel duygu yönü (Pozitif, Negatif, Nötr).
-        - **Model Güven Skoru:** NLP modelinin kararındaki güven aralığı (0-1).
-        - **Duygu Skoru:** Metnin polarite (hissiyat) gücü (-1 ile +1 arası).
-        - **Değişim (%):** Seçilen periyottaki gerçek fiyat değişimi.
-        - **S&P 500'e Göre Fark:** Hissenin getirisinden SPY getirisinin çıkarılmış halidir (Alpha).
+        **Tablo Terimlerinin Detaylı Açıklaması:**
+        - **(Başlık Yok):** Sadece başlık yerine haberin tam gövde metninin analiz edildiğini ve NLP modelinin derin bir okuma yaptığını gösterir.
+        - **Karar (Sinyal):** FinBERT Doğal Dil İşleme modelinin metni analiz edip çıkardığı nihai sonuçtur. Piyasaya etkisinin Yükseliş (Pozitif), Düşüş (Negatif) veya Etkisiz (Nötr) olacağını öngörür.
+        - **Model Güven Skoru (0.00 - 1.00):** Yapay zeka modelinin verdiği karardan ne kadar emin olduğunu gösterir. Örneğin %95 güven skoru, modelin metindeki finansal dili son derece net anladığı anlamına gelir.
+        - **Duygu Skoru (-1.00 ile +1.00):** Metindeki hissiyatın şiddetini (polarite) ölçer. +1'e yaklaştıkça metindeki coşku ve alım çılgınlığı, -1'e yaklaştıkça ise panik ve satış baskısı artar.
+        - **Değişim (%):** Haberin yayımlandığı saniyedeki fiyat ile, seçilen zaman periyodu (örneğin 15 dakika) sonrasındaki fiyat arasındaki net, gerçek piyasa hareketidir.
+        - **S&P 500'e Göre Fark (Alpha):** Hissenin kendi başına mı yükseldiğini yoksa sadece tüm piyasa (S&P 500) yükseldiği için mi yükseldiğini ayırt etmeye yarayan Wall Street metriğidir. Pozitif (+) değer, hissenin piyasadan daha çok kazandırdığını kanıtlar.
         """)
         
         display_cols = ['ticker', 'published_at', 'title', 'Sinyal', 'sentiment_score']
