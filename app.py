@@ -206,21 +206,27 @@ else:
                             contrarian_tickers.append(t)
                         elif p > 0 and n < 0:
                             linear_tickers.append(t)
+                mixed_tickers = [t for t in ticker_stats.index if t not in contrarian_tickers and t not in linear_tickers]
                 
                 insight_text = f"**Portföy Dağılımı ({time_text}):**\n\n"
                 
                 if contrarian_tickers:
                     insight_text += f"- **Tersine Korelasyon (Contrarian):** {', '.join(contrarian_tickers)} (Haber yönü ile fiyat hareketi zıt yönlü. Önceden fiyatlanma ihtimali yüksek.)\n"
                 if linear_tickers:
-                    insight_text += f"- **Doğrusal Korelasyon:** {', '.join(linear_tickers)} (Haber yönü ile fiyat hareketi aynı yönlü.)"
+                    insight_text += f"- **Doğrusal Korelasyon:** {', '.join(linear_tickers)} (Haber yönü ile fiyat hareketi tam uyumlu.)\n"
+                if mixed_tickers:
+                    insight_text += f"- **Karmaşık Etki:** {', '.join(mixed_tickers)} (Piyasa trendi haberden daha baskın.)"
                     
                 st.info(insight_text)
             else:
-                if (pos_val < 0 and neg_val > 0) or (pos_val < 0 and neg_val < 0 and pos_val < neg_val):
-                    insight_text = f"**Tersine Korelasyon (Contrarian):** 'Pozitif' sinyallerde ortalama fiyat değişimi %{pos_val:.2f}, 'Negatif' sinyallerde %{neg_val:.2f}. Hisse, piyasa haberlerine zıt tepki vermektedir."
-                    st.info(insight_text)
+                if pos_val < 0 and neg_val > 0:
+                    insight_text = f"**Tersine Korelasyon (Contrarian):** 'Pozitif' haberde %{pos_val:.2f} düşmüş, 'Negatif' haberde %{neg_val:.2f} yükselmiş. Hisse haberlere ZIT tepki veriyor."
+                    st.warning(insight_text)
+                elif pos_val > 0 and neg_val < 0:
+                    insight_text = f"**Doğrusal Korelasyon:** 'Pozitif' haberde %{pos_val:.2f} yükselmiş, 'Negatif' haberde %{neg_val:.2f} düşmüş. Hisse haberlerle UYUMLU hareket ediyor."
+                    st.success(insight_text)
                 else:
-                    insight_text = f"**Doğrusal Korelasyon:** 'Pozitif' sinyallerde ortalama fiyat değişimi %{pos_val:.2f}, 'Negatif' sinyallerde %{neg_val:.2f}. Hisse, çıkan haberlerle uyumlu hareket etmektedir."
+                    insight_text = f"**Karmaşık Korelasyon:** Pozitif etki %{pos_val:.2f}, Negatif etki %{neg_val:.2f}. Piyasanın genel yönü, haberin önüne geçmiş olabilir."
                     st.info(insight_text)
         else:
             st.info(f"Yeterli veri hacmi sağlanamadı ({time_filter}).")
@@ -294,13 +300,13 @@ else:
 
         st.subheader("Finansal Analiz Tablosu")
         st.markdown("""
-        **Tablo Terimlerinin Detaylı Açıklaması:**
-        - **(Başlık Yok):** Sadece başlık yerine haberin tam gövde metninin analiz edildiğini ve NLP modelinin derin bir okuma yaptığını gösterir.
-        - **Karar (Sinyal):** FinBERT Doğal Dil İşleme modelinin metni analiz edip çıkardığı nihai sonuçtur. Piyasaya etkisinin Yükseliş (Pozitif), Düşüş (Negatif) veya Etkisiz (Nötr) olacağını öngörür.
-        - **Model Güven Skoru (0.00 - 1.00):** Yapay zeka modelinin verdiği karardan ne kadar emin olduğunu gösterir. Örneğin %95 güven skoru, modelin metindeki finansal dili son derece net anladığı anlamına gelir.
-        - **Duygu Skoru (-1.00 ile +1.00):** Metindeki hissiyatın şiddetini (polarite) ölçer. +1'e yaklaştıkça metindeki coşku ve alım çılgınlığı, -1'e yaklaştıkça ise panik ve satış baskısı artar.
-        - **Değişim (%):** Haberin yayımlandığı saniyedeki fiyat ile, seçilen zaman periyodu (örneğin 15 dakika) sonrasındaki fiyat arasındaki net, gerçek piyasa hareketidir.
-        - **S&P 500'e Göre Fark (Alpha):** Hissenin kendi başına mı yükseldiğini yoksa sadece tüm piyasa (S&P 500) yükseldiği için mi yükseldiğini ayırt etmeye yarayan Wall Street metriğidir. Pozitif (+) değer, hissenin piyasadan daha çok kazandırdığını kanıtlar.
+        **Tablo Terimleri:**
+        - **(Başlık Yok):** Haber başlığı yerine metnin gövdesinin (tamamının) analiz edildiğini belirtir.
+        - **Karar:** Yapay zekanın haber metninden çıkardığı yön kararıdır (Pozitif, Negatif, Nötr).
+        - **Model Güven Skoru:** Yapay zekanın kendi verdiği karardan ne kadar emin olduğunu gösterir (0 ile 1 arası).
+        - **Duygu Skoru:** Haber metnindeki duygunun şiddetini gösterir (-1 aşırı negatif, +1 aşırı pozitif).
+        - **Değişim (%):** Haberin çıktığı an ile seçilen süre (örneğin 15 dk) sonrasındaki gerçek fiyat değişimidir.
+        - **S&P 500'e Göre Fark:** Hissenin getirisinden genel Amerikan piyasasının (S&P 500) getirisinin çıkarılmasıyla bulunur. Saf başarıyı gösterir.
         """)
         
         display_cols = ['ticker', 'published_at', 'title', 'Sinyal', 'sentiment_score']
