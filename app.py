@@ -211,7 +211,7 @@ else:
                 insight_text = f"**Portföy Dağılımı ({time_text}):**\n\n"
                 
                 if contrarian_tickers:
-                    insight_text += f"- **Tersine Korelasyon (Contrarian):** {', '.join(contrarian_tickers)} (Haber yönü ile fiyat hareketi zıt yönlü. Önceden fiyatlanma ihtimali yüksek.)\n"
+                    insight_text += f"- **Tersine Korelasyon (Contrarian):** {', '.join(contrarian_tickers)} (Haber yönü ile fiyat hareketi zıt yönlü.)\n"
                 if linear_tickers:
                     insight_text += f"- **Doğrusal Korelasyon:** {', '.join(linear_tickers)} (Haber yönü ile fiyat hareketi tam uyumlu.)\n"
                 if mixed_tickers:
@@ -301,12 +301,12 @@ else:
         st.subheader("Finansal Analiz Tablosu")
         st.markdown("""
         **Tablo Terimleri:**
-        - **(Başlık Yok):** Haber başlığı yerine metnin gövdesinin (tamamının) analiz edildiğini belirtir.
+        - **(Başlık Yok):** Haber başlığı olmadığı için metnin gövdesinin analiz edildiğini belirtir.
         - **Karar:** Yapay zekanın haber metninden çıkardığı yön kararıdır (Pozitif, Negatif, Nötr).
         - **Model Güven Skoru:** Yapay zekanın kendi verdiği karardan ne kadar emin olduğunu gösterir (0 ile 1 arası).
         - **Duygu Skoru:** Haber metnindeki duygunun şiddetini gösterir (-1 aşırı negatif, +1 aşırı pozitif).
         - **Değişim (%):** Haberin çıktığı an ile seçilen süre (örneğin 15 dk) sonrasındaki gerçek fiyat değişimidir.
-        - **S&P 500'e Göre Fark:** Hissenin getirisinden genel Amerikan piyasasının (S&P 500) getirisinin çıkarılmasıyla bulunur. Saf başarıyı gösterir.
+        - **S&P 500'e Göre Fark:** Hissenin getirisinden genel Amerikan piyasasının (S&P 500) getirisinin çıkarılmasıyla bulunur. Mesela hisse %2 yükselmiş, SPY ise %1 düşmüş ise, S&P 500'e göre fark %3 olur.
         """)
         
         display_cols = ['ticker', 'published_at', 'title', 'Sinyal', 'sentiment_score']
