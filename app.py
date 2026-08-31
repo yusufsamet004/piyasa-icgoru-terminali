@@ -286,15 +286,16 @@ else:
             
             ticker_returns = pd.merge(all_combos, ticker_returns, on=['ticker', 'Sinyal'], how='left').fillna({'Ortalama_Degisim': 0, 'Adet': 0})
             
-            ticker_bar_chart = alt.Chart(ticker_returns).mark_bar(cornerRadiusTopLeft=3, cornerRadiusTopRight=3, size=20).encode(
-                x=alt.X('ticker:N', title='Hisse', axis=alt.Axis(labelAngle=0)),
+            ticker_bar_chart = alt.Chart(ticker_returns).mark_bar(cornerRadiusTopLeft=3, cornerRadiusTopRight=3).encode(
+                x=alt.X('Sinyal:N', title=None, axis=alt.Axis(labels=False, ticks=False)),
                 y=alt.Y('Ortalama_Degisim:Q', title='Ortalama Değişim (%)'),
                 color=alt.Color('Sinyal:N', scale=color_scale, legend=alt.Legend(title="Karar")),
-                xOffset=alt.XOffset('Sinyal:N', sort=['Pozitif', 'Nötr', 'Negatif']),
                 tooltip=['ticker', 'Sinyal', alt.Tooltip('Ortalama_Degisim:Q', title='Ortalama Değişim (%)', format='.2f'), alt.Tooltip('Adet:Q', title='Haber Sayısı')]
-            ).properties(height=350).interactive()
+            ).properties(width=60, height=350).facet(
+                column=alt.Column('ticker:N', title='Hisse', header=alt.Header(labelOrient='bottom', titleOrient='bottom', labelPadding=10))
+            ).interactive()
             
-            st.altair_chart(ticker_bar_chart, use_container_width=True)
+            st.altair_chart(ticker_bar_chart, use_container_width=False)
             
         st.divider()
 
