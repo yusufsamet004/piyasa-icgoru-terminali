@@ -286,7 +286,7 @@ else:
             
             ticker_returns = pd.merge(all_combos, ticker_returns, on=['ticker', 'Sinyal'], how='left').fillna({'Ortalama_Degisim': 0, 'Adet': 0})
             
-            ticker_bar_chart = alt.Chart(ticker_returns).mark_bar(cornerRadiusTopLeft=3, cornerRadiusTopRight=3).encode(
+            ticker_bar_chart = alt.Chart(ticker_returns).mark_bar(size=15).encode(
                 x=alt.X('Sinyal:N', title=None, axis=alt.Axis(labels=False, ticks=False)),
                 y=alt.Y('Ortalama_Degisim:Q', title='Ortalama Değişim (%)'),
                 color=alt.Color('Sinyal:N', scale=color_scale, legend=alt.Legend(title="Karar")),
